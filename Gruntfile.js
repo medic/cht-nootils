@@ -12,8 +12,14 @@ module.exports = function(grunt) {
         jshintrc: true,
         reporter: require('jshint-stylish'),
       },
-      all: [
+      web: [
+        'src/web/*.js',
+      ],
+      other: [
+        'package.json',
         'Gruntfile.js',
+        'node/*.js',
+        'src/test/*.js',
       ]
     },
     nodeunit: {
