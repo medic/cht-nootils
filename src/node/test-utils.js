@@ -2,7 +2,7 @@ var fs = require('fs');
 var _ = require('underscore');
 var assert = require('chai').assert;
 var Nools = require('nools');
-var nootils = require('./nootils');
+var nootils = require('../web/nootils');
 
 function traverse(keys, element) {
   var keys = keys.slice(0);
