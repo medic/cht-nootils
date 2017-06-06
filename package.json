@@ -1,0 +1,40 @@
+{
+  "name": "medic-nootils",
+  "version": "1.0.0",
+  "description": "medic mobile extensions for nools for use in tasks-rules",
+  "main": "src/nootils.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/medic/medic-nootils.git"
+  },
+  "keywords": [
+    "nools",
+    "medicmobile",
+    "medic",
+    "mobile"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/medic/medic-nootils/issues"
+  },
+  "homepage": "https://github.com/medic/medic-nootils#readme",
+  "dependencies": {
+    "nools": "^0.4.4",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-nodeunit": "^1.0.0",
+    "jshint-stylish": "^2.2.1",
+    "load-grunt-tasks": "^3.5.2",
+    "time-grunt": "^1.4.0"
+  }
+}
