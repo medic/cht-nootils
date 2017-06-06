@@ -17,7 +17,7 @@ function traverse(keys, element) {
 NoolsTest = module.exports = (function() {
   function parseRules(rulesetFilePath, scheduleFilePath, additionalScope) {
     var rawSchedules = fs.readFileSync(scheduleFilePath, { encoding:'utf-8' });
-    var schedules = JSON.parse('{' + rawSchedules + '}').schedules;
+    var schedules = JSON.parse(rawSchedules);
     var settings = { tasks: { schedules: schedules } };
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
