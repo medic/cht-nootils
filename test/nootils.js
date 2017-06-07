@@ -1,4 +1,4 @@
-var nootils = require('../src/nootils')({});
+var nootils = require('../src/web/nootils')({});
 
 var format = function(date) {
   var result = date.toString();
