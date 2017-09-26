@@ -42,6 +42,13 @@ NoolsTest = module.exports = (function() {
         .then(() => assert.deepEqual(actualEmits, expectedEmits));
     };
 
+    session.emitTasks = () => {
+      var actualEmits = [];
+      session.on('task', t => actualEmits.push(t));
+
+      return session.match().then(() => actualEmits);
+    };
+
     return { flow:flow, session:session, utils:Utils };
   }
 
