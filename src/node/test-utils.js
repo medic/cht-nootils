@@ -26,6 +26,15 @@ NoolsTest = module.exports = (function() {
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
     var session = flow.getSession();
 
+    session.emitTasks = () => {
+      var actualEmits = [];
+
+      session.on('task', t => actualEmits.push(t));
+
+      return session.match()
+        .then(() => actualEmits);
+    };
+
     session.expectEmits = (key, ...expectedEmits) => {
       if(typeof key !== 'string') {
         expectedEmits.unshift(key);
@@ -40,13 +49,6 @@ NoolsTest = module.exports = (function() {
 
       return session.match()
         .then(() => assert.deepEqual(actualEmits, expectedEmits));
-    };
-
-    session.emitTasks = () => {
-      var actualEmits = [];
-      session.on('task', t => actualEmits.push(t));
-
-      return session.match().then(() => actualEmits);
     };
 
     return { flow:flow, session:session, utils:Utils };
