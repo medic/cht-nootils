@@ -3,6 +3,7 @@ var _ = require('underscore');
 var assert = require('chai').assert;
 var Nools = require('nools');
 var nootils = require('../web/nootils');
+const path = require('path');
 
 function traverse(keys, element) {
   var keys = keys.slice(0);
@@ -16,13 +17,17 @@ function traverse(keys, element) {
 
 NoolsTest = module.exports = (function() {
   function parseRules(rulesetFilePath, scheduleFilePath, additionalScope) {
-    var rawSchedules = fs.readFileSync(scheduleFilePath, { encoding:'utf-8' });
+    var rawSchedules = readFile(scheduleFilePath);
     var schedules = JSON.parse(rawSchedules);
     var settings = { tasks: { schedules: schedules } };
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
 
-    var rawRules = fs.readFileSync(rulesetFilePath, { encoding:'utf-8' });
+    const projectDir = path.dirname(rulesetFilePath);
+    var rawRules = readFile(rulesetFilePath)
+        .replace(/___TEMPLATE:([^_]*)___/g, (_, filename) =>
+            readFile(`${projectDir}/${filename}`));
+
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
     var session = flow.getSession();
 
@@ -58,3 +63,7 @@ NoolsTest = module.exports = (function() {
     parseRules: parseRules,
   };
 }());
+
+function readFile(path) {
+  return fs.readFileSync(path, { encoding:'utf-8' });
+}
