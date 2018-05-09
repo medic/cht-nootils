@@ -17,9 +17,16 @@ function traverse(keys, element) {
 
 NoolsTest = module.exports = (function() {
   function parseRules(rulesetFilePath, scheduleFilePath, additionalScope) {
-    var rawSchedules = readFile(scheduleFilePath);
-    var schedules = JSON.parse(rawSchedules);
-    var settings = { tasks: { schedules: schedules } };
+    const settings = { tasks: {} };
+    if(arguments.length === 2) {
+      // no scheduleFilePath (tasks.json) provided - this means that the project
+      // doesn't use them.
+      additionalScope = scheduleFilePath;
+      scheduleFilePath = null;
+    } else {
+      const rawSchedules = readFile(scheduleFilePath);
+      settings.tasks.schedules = JSON.parse(rawSchedules);
+    }
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
 

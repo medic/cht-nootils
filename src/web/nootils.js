@@ -27,6 +27,7 @@ module.exports = function(settings) {
       var weeks = doc.fields.last_menstrual_period || NO_LMP_DATE_MODIFIER;
       return this.addDate(new Date(doc.reported_date), weeks * -7);
     },
+    // TODO getSchedule() can be removed when tasks.json support is dropped
     getSchedule: function(name) {
       return _.findWhere(settings.tasks.schedules, { name: name });
     },
