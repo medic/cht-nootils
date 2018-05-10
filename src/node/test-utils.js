@@ -32,7 +32,7 @@ NoolsTest = module.exports = (function() {
 
     const projectDir = path.dirname(rulesetFilePath);
     var rawRules = readFile(rulesetFilePath)
-        .replace(/___TEMPLATE:([^_]*)___/g, (_, filename) =>
+        .replace(/__include_inline__\('\s*([^_]*)'\s*\);/g, (_, filename) =>
             readFile(`${projectDir}/${filename}`));
 
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
