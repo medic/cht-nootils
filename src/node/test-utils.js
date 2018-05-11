@@ -47,6 +47,15 @@ NoolsTest = module.exports = (function() {
         .then(() => actualEmits);
     };
 
+    session.emitTargets = () => {
+      var actualEmits = [];
+
+      session.on('target', t => actualEmits.push(t));
+
+      return session.match()
+        .then(() => actualEmits);
+    };
+
     session.expectEmits = (key, ...expectedEmits) => {
       if(typeof key !== 'string') {
         expectedEmits.unshift(key);
