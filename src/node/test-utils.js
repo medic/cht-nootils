@@ -4,6 +4,7 @@ var assert = require('chai').assert;
 var Nools = require('nools');
 var nootils = require('../web/nootils');
 const path = require('path');
+const compileNoolsRules = require('medic-conf/src/lib/compile-nools-rules');
 
 function traverse(keys, element) {
   var keys = keys.slice(0);
@@ -16,7 +17,7 @@ function traverse(keys, element) {
 }
 
 NoolsTest = module.exports = (function() {
-  function parseRules(rulesetFilePath, scheduleFilePath, additionalScope) {
+  function parseRules(projectDir, scheduleFilePath, additionalScope) {
     const settings = { tasks: {} };
     if(arguments.length === 2) {
       // no scheduleFilePath (tasks.json) provided - this means that the project
@@ -30,10 +31,7 @@ NoolsTest = module.exports = (function() {
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
 
-    const projectDir = path.dirname(rulesetFilePath);
-    var rawRules = readFile(rulesetFilePath)
-        .replace(/__include_inline__\('\s*([^_]*)'\s*\);/g, (_, filename) =>
-            readFile(`${projectDir}/${filename}`));
+    const rawRules = compileNoolsRules(projectDir);
 
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
     var session = flow.getSession();
