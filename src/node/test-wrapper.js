@@ -8,13 +8,21 @@ const parseRules = require('./test-utils').parseRules;
 
 const BASE_DATE = 1469358731456;
 
-module.exports = function(something) {
+module.exports = function(a, b) {
+  let scheduleFilePath, additionalScope;
+  if(arguments.length === 1) {
+    additionalScope = a;
+  } else {
+    scheduleFilePath = a;
+    additionalScope = b;
+  }
+
   let overridden, flow;
 
   const self = {};
   const asserted = [];
 
-  const rules = parseRules('.', something);
+  const rules = parseRules('.', scheduleFilePath, additionalScope);
 
   // ensure that all tests are run in reference to a specific date
   rules.utils.now = function() { return new Date(BASE_DATE); };
