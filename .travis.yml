@@ -22,3 +22,9 @@ matrix:
       env: TZ='Pacific/Kiritimati'
     - node_js: 6
       env: TZ='Etc/GMT+12'
+notifications:
+  webhooks:
+    urls:
+      - https://medic.slack.com/services/hooks/travis?token=xcYT8yusfEdSwLskhBxK4Vwj
+    on_success: change
+    on_failure: always
