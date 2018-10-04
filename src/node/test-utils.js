@@ -21,15 +21,16 @@ NoolsTest = module.exports = (function() {
     const settings = { tasks: {} };
 
     if(arguments.length === 2) {
-      // no scheduleFilePath (tasks.json) provided - this means that the project
+      // no scheduleFilePath (tasks file) provided - this means that the project
       // doesn't use them.
       additionalScope = scheduleFilePath;
       scheduleFilePath = null;
     }
 
     if(scheduleFilePath) {
+      const isJsFile = path.extname(scheduleFilePath) === '.js'
       const rawSchedules = readFile(scheduleFilePath);
-      settings.tasks.schedules = JSON.parse(rawSchedules);
+      settings.tasks.schedules = isJsFile ? eval(rawSchedules) : JSON.parse(rawSchedules);
     }
 
     var Utils = nootils(settings);
