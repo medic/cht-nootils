@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/medic/medic-nootils#readme",
   "dependencies": {
-    "medic-conf": "^1.16.9",
+    "medic-conf": "^1.18.11",
     "nools": "^0.4.4",
     "underscore": "^1.8.3"
   },
