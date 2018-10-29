@@ -6,10 +6,18 @@ var format = function(date) {
   return result.substr(0, 24);
 };
 
+var addDays = function(currentDate, days) {
+  var date = new Date(currentDate);
+  date.setDate(date.getDate() + days); 
+  date.setHours(0,0,0);
+  return date
+}
 exports['addDate adds days to the date'] = function(test) {
   var date = new Date('2017-01-01');
-  var actual = nootils.addDate(date, 2);
-  test.equal(format(actual), 'Tue Jan 03 2017 00:00:00');
+  var days = 2;
+  var actual = nootils.addDate(date, days);
+  var expectedDate = addDays(date, days);
+  test.equal(format(actual),format(expectedDate));
   test.done();
 };
 
@@ -35,7 +43,8 @@ exports['getLmpDate subtracts given weeks off reported date'] = function(test) {
     fields: { last_menstrual_period: 3 }
   };
   var actual = nootils.getLmpDate(doc);
-  test.equal(format(actual), 'Mon Jan 09 2017 00:00:00');
+  var expectDate = addDays(date, doc.fields.last_menstrual_period * -7);
+  test.equal(format(actual), format(expectDate));
   test.done();
 };
 
@@ -46,7 +55,8 @@ exports['getLmpDate defaults to 4 weeks'] = function(test) {
     fields: { }
   };
   var actual = nootils.getLmpDate(doc);
-  test.equal(format(actual), 'Mon Jan 02 2017 00:00:00');
+  var expectDate = addDays(date, 4 * -7);
+  test.equal(format(actual), format(expectDate));
   test.done();
 };
 
