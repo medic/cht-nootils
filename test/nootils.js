@@ -8,7 +8,6 @@ var format = function(date) {
 
 exports['addDate adds days to the date'] = function(test) {
   var date = new Date('Jan 01 2017');
-  console.log(date);
   var actual = nootils.addDate(date, 2);
   test.equal(format(actual),'Tue Jan 03 2017 00:00:00');
   test.done();
