@@ -7,7 +7,7 @@ var format = function(date) {
 };
 
 exports['addDate adds days to the date'] = function(test) {
-  var date = new Date('2017-01-01');
+  var date = new Date(2017, 0, 1);
   var actual = nootils.addDate(date, 2);
   test.equal(format(actual), 'Tue Jan 03 2017 00:00:00');
   test.done();
@@ -29,7 +29,7 @@ exports['addDate returns the start of the day'] = function(test) {
 };
 
 exports['getLmpDate subtracts given weeks off reported date'] = function(test) {
-  var date = new Date('2017-01-30');
+  var date = new Date(2017, 0, 30);
   var doc = {
     reported_date: date.valueOf(),
     fields: { last_menstrual_period: 3 }
@@ -40,7 +40,7 @@ exports['getLmpDate subtracts given weeks off reported date'] = function(test) {
 };
 
 exports['getLmpDate defaults to 4 weeks'] = function(test) {
-  var date = new Date('2017-01-30');
+  var date = new Date(2017, 0, 30);
   var doc = {
     reported_date: date.valueOf(),
     fields: { }

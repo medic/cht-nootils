@@ -9,7 +9,7 @@
   "scripts": {
     "jshint": "jshint src/**/*.js test/*.spec.js",
     "release": "git push && git tag v$(jq -r .version package.json) && git push --tags && npm publish --access=public",
-    "test": "npm run jshint && npm run unit",
+    "test": "npm run jshint && TZ=GMT npm run unit && TZ=GMT+12 npm run unit && TZ=GMT-14 npm run unit",
     "unit": "nodeunit test/*.spec.js"
   },
   "repository": {
