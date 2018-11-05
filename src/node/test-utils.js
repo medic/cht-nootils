@@ -7,7 +7,7 @@ const path = require('path');
 const compileNoolsRules = require('medic-conf/src/lib/compile-nools-rules');
 
 function traverse(keys, element) {
-  var keys = keys.slice(0);
+  keys = keys.slice(0);
   var key = keys.shift();
   if(!key || typeof element === 'undefined') return element;
   if(key === '*') {
