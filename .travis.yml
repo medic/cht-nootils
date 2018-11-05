@@ -6,20 +6,20 @@ node_js:
   - 6
 env:
   - TZ=GMT
-  - TZ='Pacific/Kiritimati'
+  - TZ='Etc/GMT-14'
   - TZ='Etc/GMT+12'
 matrix:
   exclude:
     - node_js: 10
-      env: TZ='Pacific/Kiritimati'
+      env: TZ='Etc/GMT-14'
     - node_js: 10
       env: TZ='Etc/GMT+12'
     - node_js: 8
-      env: TZ='Pacific/Kiritimati'
+      env: TZ='Etc/GMT-14'
     - node_js: 8
       env: TZ='Etc/GMT+12'
     - node_js: 6
-      env: TZ='Pacific/Kiritimati'
+      env: TZ='Etc/GMT-14'
     - node_js: 6
       env: TZ='Etc/GMT+12'
 notifications:
