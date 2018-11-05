@@ -10,13 +10,13 @@ env:
   - TZ='Etc/GMT+12'
 matrix:
   exclude:
-    - node_js: 8
+    - node_js: 10
       env: TZ='Pacific/Kiritimati'
-    - node_js: 8
+    - node_js: 10
       env: TZ='Etc/GMT+12'
-    - node_js: 7
+    - node_js: 8
       env: TZ='Pacific/Kiritimati'
-    - node_js: 7
+    - node_js: 8
       env: TZ='Etc/GMT+12'
     - node_js: 6
       env: TZ='Pacific/Kiritimati'
