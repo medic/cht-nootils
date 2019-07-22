@@ -5,6 +5,7 @@
  */
 const path = require('path');
 const nools = require('nools');
+const sinon = require('sinon');
 const parseRules = require('./test-utils').parseRules;
 
 const BASE_DATE = 1469358731456;
@@ -24,10 +25,9 @@ module.exports = async function(a, b) {
   const asserted = [];
 
   const projectDir = path.resolve('.');
+  
+  sinon.useFakeTimers(BASE_DATE);
   const rules = await parseRules(projectDir, scheduleFilePath, additionalScope);
-
-  // ensure that all tests are run in reference to a specific date
-  rules.utils.now = function() { return new Date(BASE_DATE); };
 
   flow = rules.flow;
   self.session = rules.session;
