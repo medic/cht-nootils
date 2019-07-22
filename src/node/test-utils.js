@@ -16,7 +16,7 @@ function traverse(keys, element) {
 }
 
 NoolsTest = module.exports = (function() {
-  function parseRules(projectDir, scheduleFilePath, additionalScope) {
+  async function parseRules(projectDir, scheduleFilePath, additionalScope) {
     const settings = { tasks: {} };
 
     if(arguments.length === 2) {
@@ -34,7 +34,7 @@ NoolsTest = module.exports = (function() {
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
 
-    const rawRules = compileNoolsRules(projectDir);
+    const rawRules = await compileNoolsRules(projectDir);
 
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
     var session = flow.getSession();
@@ -76,9 +76,7 @@ NoolsTest = module.exports = (function() {
     return { flow:flow, session:session, utils:Utils };
   }
 
-  return {
-    parseRules: parseRules,
-  };
+  return { parseRules };
 }());
 
 function readFile(path) {
