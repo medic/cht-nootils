@@ -7,9 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "jshint": "jshint src/**/*.js test/*.spec.js",
+    "eslint": "eslint src/**/*.js test/*.spec.js",
     "release": "git push && git tag v$(jq -r .version package.json) && git push --tags && npm publish --access=public",
-    "test": "npm run jshint && TZ=GMT npm run unit && TZ=GMT+12 npm run unit && TZ=GMT-14 npm run unit",
+    "test": "npm run eslint && TZ=GMT npm run unit && TZ=GMT+12 npm run unit && TZ=GMT-14 npm run unit",
     "unit": "nodeunit test/*.spec.js"
   },
   "repository": {
@@ -35,7 +35,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
-    "jshint": "^2.9.6",
+    "eslint": "^6.1.0",
     "nodeunit": "^0.11.3"
   }
 }

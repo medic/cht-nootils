@@ -15,7 +15,7 @@ function traverse(keys, element) {
   return traverse(keys, element[key]);
 }
 
-NoolsTest = module.exports = (function() {
+module.exports = (function() {
   async function parseRules(projectDir, scheduleFilePath, additionalScope) {
     const settings = { tasks: {} };
 

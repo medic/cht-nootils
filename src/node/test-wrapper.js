@@ -3,6 +3,7 @@
  *
  * Simple setup of nootils for mocha tests.
  */
+const path = require('path');
 const nools = require('nools');
 const parseRules = require('./test-utils').parseRules;
 
