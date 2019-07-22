@@ -1,6 +1,6 @@
 {
-  "name": "@kennsippell/medic-nootils",
-  "version": "3.0.3",
+  "name": "medic-nootils",
+  "version": "3.0.0",
   "description": "medic mobile extensions for nools for use in tasks-rules",
   "main": "src/web/nootils.js",
   "directories": {
