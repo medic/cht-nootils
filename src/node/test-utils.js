@@ -3,7 +3,7 @@ var _ = require('underscore');
 var assert = require('chai').assert;
 var Nools = require('nools');
 var nootils = require('../web/nootils');
-const compileNoolsRules = require('@kennsippell/medic-conf/src/lib/compile-nools-rules');
+const compileNoolsRules = require('medic-conf/src/lib/compile-nools-rules');
 
 function traverse(keys, element) {
   keys = keys.slice(0);
