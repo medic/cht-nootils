@@ -3,12 +3,14 @@
  *
  * Simple setup of nootils for mocha tests.
  */
+const path = require('path');
 const nools = require('nools');
+const sinon = require('sinon');
 const parseRules = require('./test-utils').parseRules;
 
 const BASE_DATE = 1469358731456;
 
-module.exports = function(a, b) {
+module.exports = async function(a, b) {
   let scheduleFilePath, additionalScope;
   if(arguments.length === 1) {
     additionalScope = a;
@@ -22,10 +24,10 @@ module.exports = function(a, b) {
   const self = {};
   const asserted = [];
 
-  const rules = parseRules('.', scheduleFilePath, additionalScope);
-
-  // ensure that all tests are run in reference to a specific date
-  rules.utils.now = function() { return new Date(BASE_DATE); };
+  const projectDir = path.resolve('.');
+  
+  sinon.useFakeTimers(BASE_DATE);
+  const rules = await parseRules(projectDir, scheduleFilePath, additionalScope);
 
   flow = rules.flow;
   self.session = rules.session;

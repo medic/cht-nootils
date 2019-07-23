@@ -3,7 +3,6 @@ var _ = require('underscore');
 var assert = require('chai').assert;
 var Nools = require('nools');
 var nootils = require('../web/nootils');
-const path = require('path');
 const compileNoolsRules = require('medic-conf/src/lib/compile-nools-rules');
 
 function traverse(keys, element) {
@@ -16,8 +15,8 @@ function traverse(keys, element) {
   return traverse(keys, element[key]);
 }
 
-NoolsTest = module.exports = (function() {
-  function parseRules(projectDir, scheduleFilePath, additionalScope) {
+module.exports = (function() {
+  async function parseRules(projectDir, scheduleFilePath, additionalScope) {
     const settings = { tasks: {} };
 
     if(arguments.length === 2) {
@@ -35,7 +34,7 @@ NoolsTest = module.exports = (function() {
     var Utils = nootils(settings);
     var scope = Object.assign({}, additionalScope, { Utils:Utils });
 
-    const rawRules = compileNoolsRules(projectDir);
+    const rawRules = await compileNoolsRules(projectDir);
 
     var flow = Nools.compile(rawRules, { name:'test', scope:scope });
     var session = flow.getSession();
@@ -77,9 +76,7 @@ NoolsTest = module.exports = (function() {
     return { flow:flow, session:session, utils:Utils };
   }
 
-  return {
-    parseRules: parseRules,
-  };
+  return { parseRules };
 }());
 
 function readFile(path) {
