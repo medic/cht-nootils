@@ -142,3 +142,25 @@ exports['getMostRecentReport ignores deleted reports'] = function(test) {
   test.equal(actual, null);
   test.done();
 };
+
+exports['getMostRecentReport returns report matching fields'] = function(test) {
+  var reports = [
+    { _id: 1, form: 'H', reported_date: 1 },
+    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+    { _id: 3, form: 'V', reported_date: 3 }
+  ];
+  var actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false });
+  test.equal(actual._id, 2);
+  test.done();
+};
+
+exports['getMostRecentReport returns null if no matching fields'] = function(test) {
+  var reports = [
+    { _id: 1, form: 'H', reported_date: 1 },
+    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false} }},
+    { _id: 3, form: 'V', reported_date: 3 }
+  ];
+  var actual = nootils.getMostRecentReport(reports, 'V', { dob: '2000-01-02' });
+  test.equal(actual, null);
+  test.done();
+};

@@ -31,16 +31,17 @@ module.exports = function(settings) {
     getSchedule: function(name) {
       return _.findWhere(settings.tasks.schedules, { name: name });
     },
-    getMostRecentTimestamp: function(reports, form) {
-      var report = this.getMostRecentReport(reports, form);
+    getMostRecentTimestamp: function(reports, form, fields=null) {
+      var report = this.getMostRecentReport(reports, form, fields);
       return report && report.reported_date;
     },
-    getMostRecentReport: function(reports, form) {
+    getMostRecentReport: function(reports, form, fields=null) {
       var result = null;
       reports.forEach(function(report) {
         if (report.form === form &&
            !report.deleted &&
-           (!result || report.reported_date > result.reported_date)) {
+           (!result || report.reported_date > result.reported_date) &&
+           (!fields || report.fields && _.reduce(_.keys(fields), function(memo, e) { return memo && _.propertyOf(report.fields)(e.split('.')) === fields[e]; }, true))) {
           result = report;
         }
       });
