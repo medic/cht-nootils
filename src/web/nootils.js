@@ -35,13 +35,13 @@ module.exports = function(settings) {
       var report = this.getMostRecentReport(reports, form, fields);
       return report && report.reported_date;
     },
-    getMostRecentReport: function(reports, form, fields=null) {
+    getMostRecentReport: function(reports, form, fields) {
       var result = null;
       reports.forEach(function(report) {
         if (report.form === form &&
            !report.deleted &&
-           (!result || report.reported_date > result.reported_date) &&
-           (!fields || report.fields && _.reduce(_.keys(fields), function(memo, e) { return memo && _.propertyOf(report.fields)(e.split('.')) === fields[e]; }, true))) {
+           (!result || (report.reported_date > result.reported_date)) &&
+           (!fields || (report.fields && lib.fieldsMatch(report, fields)))) {
           result = report;
         }
       });
@@ -72,6 +72,20 @@ module.exports = function(settings) {
     },
     isDateValid: function(date) {
       return !isNaN(date.getTime());
+    },
+    getField: function(report, field) {
+      /* field is a string e.g 'dob' (equivalent to report.fields.dob) or
+      * 'screening.test_result' equivalent to report.fields.screening.test_result
+      */
+      return _.propertyOf(report.fields)(field.split('.'));
+    },
+    fieldEquals: function(report, field, value) {
+      return lib.getField(report, field) === value;
+    },
+    fieldsMatch: function(report, fieldValues) {
+      return Object.keys(fieldValues).reduce(function(agg, field) {
+          return agg && lib.fieldEquals(report, field, fieldValues[field]);
+      }, true);
     },
     MS_IN_DAY: 24*60*60*1000, // 1 day in ms
     now: function() { return new Date(); },

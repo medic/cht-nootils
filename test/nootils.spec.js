@@ -143,7 +143,7 @@ exports['getMostRecentReport ignores deleted reports'] = function(test) {
   test.done();
 };
 
-exports['getMostRecentReport returns report matching fields'] = function(test) {
+exports['getMostRecentReport returns report matching field'] = function(test) {
   var reports = [
     { _id: 1, form: 'H', reported_date: 1 },
     { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
@@ -151,6 +151,28 @@ exports['getMostRecentReport returns report matching fields'] = function(test) {
   ];
   var actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false });
   test.equal(actual._id, 2);
+  test.done();
+};
+
+exports['getMostRecentReport returns report matching multiple fields'] = function(test) {
+  var reports = [
+    { _id: 1, form: 'H', reported_date: 1 },
+    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+    { _id: 3, form: 'V', reported_date: 3 }
+  ];
+  var actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-01' });
+  test.equal(actual._id, 2);
+  test.done();
+};
+
+exports['getMostRecentReport returns null if one of multiple fields does not match'] = function(test) {
+  var reports = [
+    { _id: 1, form: 'H', reported_date: 1 },
+    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+    { _id: 3, form: 'V', reported_date: 3 }
+  ];
+  var actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-02' });
+  test.equal(actual, null);
   test.done();
 };
 
@@ -162,5 +184,33 @@ exports['getMostRecentReport returns null if no matching fields'] = function(tes
   ];
   var actual = nootils.getMostRecentReport(reports, 'V', { dob: '2000-01-02' });
   test.equal(actual, null);
+  test.done();
+};
+
+exports['getField returns undefined if no matching fields'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1 };
+  var actual = nootils.getField(report, 'age');
+  test.equal(actual, undefined);
+  test.done();
+};
+
+exports['getField returns value field'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {age: 23} };
+  var actual = nootils.getField(report, 'age');
+  test.equal(actual, 23);
+  test.done();
+};
+
+exports['getField returns value for a nested field'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+  var actual = nootils.getField(report, 'personal_details.age');
+  test.equal(actual, 23);
+  test.done();
+};
+
+exports['getField returns undefined if for a missing nested field'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+  var actual = nootils.getField(report, 'personal_details.height');
+  test.equal(actual, undefined);
   test.done();
 };
