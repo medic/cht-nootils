@@ -31,7 +31,7 @@ module.exports = function(settings) {
     getSchedule: function(name) {
       return _.findWhere(settings.tasks.schedules, { name: name });
     },
-    getMostRecentTimestamp: function(reports, form, fields=null) {
+    getMostRecentTimestamp: function(reports, form, fields) {
       var report = this.getMostRecentReport(reports, form, fields);
       return report && report.reported_date;
     },
@@ -73,19 +73,23 @@ module.exports = function(settings) {
     isDateValid: function(date) {
       return !isNaN(date.getTime());
     },
+    /**
+     * @function
+     * @name getField
+     *
+     * Gets the value of specified field path.
+     * @param {Object} report - The report object.
+     * @param {string} field - Period separated json path assuming report.fields as
+     *      the root node e.g 'dob' (equivalent to report.fields.dob)
+     *      or 'screening.test_result' equivalent to report.fields.screening.test_result
+    */
     getField: function(report, field) {
-      /* field is a string e.g 'dob' (equivalent to report.fields.dob) or
-      * 'screening.test_result' equivalent to report.fields.screening.test_result
-      */
       return _.propertyOf(report.fields)(field.split('.'));
     },
-    fieldEquals: function(report, field, value) {
-      return lib.getField(report, field) === value;
-    },
     fieldsMatch: function(report, fieldValues) {
-      return Object.keys(fieldValues).reduce(function(agg, field) {
-          return agg && lib.fieldEquals(report, field, fieldValues[field]);
-      }, true);
+      return Object.keys(fieldValues).every(function(field) {
+          return lib.getField(report, field) === fieldValues[field];
+      });
     },
     MS_IN_DAY: 24*60*60*1000, // 1 day in ms
     now: function() { return new Date(); },
