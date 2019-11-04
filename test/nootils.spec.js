@@ -214,3 +214,24 @@ exports['getField returns undefined if for a missing nested field'] = function(t
   test.equal(actual, undefined);
   test.done();
 };
+
+exports['fieldsMatch returns true if provided field values match report values'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 23}} };
+  var actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
+  test.equal(actual, true);
+  test.done();
+};
+
+exports['fieldsMatch returns false if field value does not match report'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 22}} };
+  var actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
+  test.equal(actual, false);
+  test.done();
+};
+
+exports['fieldsMatch returns false if field specified does not exist in report'] = function(test) {
+  var report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+  var actual = nootils.fieldsMatch(report, {'personal_details.height': 5});
+  test.equal(actual, false);
+  test.done();
+};
