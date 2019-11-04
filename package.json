@@ -1,6 +1,6 @@
 {
   "name": "medic-nootils",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "medic mobile extensions for nools for use in tasks-rules",
   "main": "src/web/nootils.js",
   "directories": {
@@ -33,7 +33,7 @@
     "medic-conf": "^3.0.0",
     "nools": "^0.4.4",
     "sinon": "^7.3.2",
-    "underscore": "^1.8.3"
+    "underscore": "^1.9.1"
   },
   "devDependencies": {
     "eslint": "^6.1.0",
