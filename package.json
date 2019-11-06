@@ -1,13 +1,13 @@
 {
   "name": "medic-nootils",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "medic mobile extensions for nools for use in tasks-rules",
-  "main": "src/web/nootils.js",
+  "main": "src/nootils.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "eslint": "eslint src/**/*.js test/*.spec.js",
+    "eslint": "eslint **/*.js",
     "release": "git push && git tag v$(jq -r .version package.json) && git push --tags && npm publish --access=public",
     "test": "npm run eslint && TZ=GMT npm run unit && TZ=GMT+12 npm run unit && TZ=GMT-14 npm run unit",
     "unit": "./node_modules/mocha/bin/mocha test/*.spec.js"
@@ -29,13 +29,10 @@
   },
   "homepage": "https://github.com/medic/medic-nootils#readme",
   "dependencies": {
-    "chai": "^4.2.0",
-    "medic-conf": "^3.0.0",
-    "nools": "^0.4.4",
-    "sinon": "^7.3.2",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "eslint": "^6.1.0",
     "mocha": "^6.2.2"
   }
