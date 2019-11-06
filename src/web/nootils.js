@@ -3,6 +3,7 @@ var _ = require('underscore');
 var NO_LMP_DATE_MODIFIER = 4;
 
 module.exports = function(settings) {
+  const taskSchedules = settings && settings.tasks && settings.tasks.schedules;
   const lib = {
     /**
      * @function
@@ -30,7 +31,7 @@ module.exports = function(settings) {
     },
     // TODO getSchedule() can be removed when tasks.json support is dropped
     getSchedule: function(name) {
-      return _.findWhere(settings.tasks.schedules, { name: name });
+      return _.findWhere(taskSchedules, { name: name });
     },
     getMostRecentTimestamp: function(reports, form, fields) {
       var report = this.getMostRecentReport(reports, form, fields);
