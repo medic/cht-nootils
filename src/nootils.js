@@ -1,6 +1,6 @@
-var _ = require('underscore');
+const _ = require('underscore');
 
-var NO_LMP_DATE_MODIFIER = 4;
+const NO_LMP_DATE_MODIFIER = 4;
 
 module.exports = function(settings) {
   const taskSchedules = settings && settings.tasks && settings.tasks.schedules;
@@ -8,14 +8,14 @@ module.exports = function(settings) {
     /**
      * @function
      * In legacy versions, partner code is required to only emit tasks which are ready to be displayed to the user. Utils.isTimely is the mechanism used for this.
-     * With the rules-engine improvements in webapp 3.8, this responsibility shifts. Partner code should emit all tasks and the webapp's rules-engine decides what to display. 
+     * With the rules-engine improvements in webapp 3.8, this responsibility shifts. Partner code should emit all tasks and the webapp's rules-engine decides what to display.
      * To this end - Utils.isTimely becomes a pass-through in nootils@4.x
      * @returns True
     */
     isTimely: () => true,
 
     addDate: function(date, days) {
-      var result;
+      let result;
       if (date) {
         result = new Date(date.getTime());
       } else {
@@ -25,20 +25,24 @@ module.exports = function(settings) {
       result.setHours(0, 0, 0, 0);
       return result;
     },
+
     getLmpDate: function(doc) {
-      var weeks = doc.fields.last_menstrual_period || NO_LMP_DATE_MODIFIER;
-      return this.addDate(new Date(doc.reported_date), weeks * -7);
+      const weeks = doc.fields.last_menstrual_period || NO_LMP_DATE_MODIFIER;
+      return lib.addDate(new Date(doc.reported_date), weeks * -7);
     },
+
     // TODO getSchedule() can be removed when tasks.json support is dropped
     getSchedule: function(name) {
       return _.findWhere(taskSchedules, { name: name });
     },
+
     getMostRecentTimestamp: function(reports, form, fields) {
-      var report = this.getMostRecentReport(reports, form, fields);
+      const report = lib.getMostRecentReport(reports, form, fields);
       return report && report.reported_date;
     },
+
     getMostRecentReport: function(reports, form, fields) {
-      var result = null;
+      let result = null;
       reports.forEach(function(report) {
         if (report.form === form &&
            !report.deleted &&
@@ -49,8 +53,9 @@ module.exports = function(settings) {
       });
       return result;
     },
+
     isFormSubmittedInWindow: function(reports, form, start, end, count) {
-      var result = false;
+      let result = false;
       reports.forEach(function(report) {
         if (!result && report.form === form) {
           if (report.reported_date >= start && report.reported_date <= end) {
@@ -63,6 +68,7 @@ module.exports = function(settings) {
       });
       return result;
     },
+
     isFirstReportNewer: function(firstReport, secondReport) {
       if (firstReport && firstReport.reported_date) {
         if (secondReport && secondReport.reported_date) {
@@ -72,9 +78,11 @@ module.exports = function(settings) {
       }
       return null;
     },
+
     isDateValid: function(date) {
       return !isNaN(date.getTime());
     },
+
     /**
      * @function
      * @name getField
@@ -88,13 +96,17 @@ module.exports = function(settings) {
     getField: function(report, field) {
       return _.propertyOf(report.fields)(field.split('.'));
     },
+
     fieldsMatch: function(report, fieldValues) {
       return Object.keys(fieldValues).every(function(field) {
           return lib.getField(report, field) === fieldValues[field];
       });
     },
+
     MS_IN_DAY: 24*60*60*1000, // 1 day in ms
+
     now: function() { return new Date(); },
   };
+
   return lib;
 };

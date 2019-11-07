@@ -1,5 +1,5 @@
 const { expect } = require('chai');
-const nootils = require('../src/web/nootils')({});
+const nootils = require('../src/nootils')({});
 
 const format = function(date) {
   const result = date.toString();
