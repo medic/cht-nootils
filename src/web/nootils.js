@@ -3,15 +3,17 @@ var _ = require('underscore');
 var NO_LMP_DATE_MODIFIER = 4;
 
 module.exports = function(settings) {
-  var lib = {
-    isTimely: function(date, event) {
-      var due = new Date(date);
-      var start = lib.now();
-      start.setDate(start.getDate() + event.start);
-      var end = lib.now();
-      end.setDate(end.getDate() - event.end - 1);
-      return due.getTime() < start.getTime() && due.getTime() > end.getTime();
-    },
+  const taskSchedules = settings && settings.tasks && settings.tasks.schedules;
+  const lib = {
+    /**
+     * @function
+     * In legacy versions, partner code is required to only emit tasks which are ready to be displayed to the user. Utils.isTimely is the mechanism used for this.
+     * With the rules-engine improvements in webapp 3.8, this responsibility shifts. Partner code should emit all tasks and the webapp's rules-engine decides what to display. 
+     * To this end - Utils.isTimely becomes a pass-through in nootils@4.x
+     * @returns True
+    */
+    isTimely: () => true,
+
     addDate: function(date, days) {
       var result;
       if (date) {
@@ -29,7 +31,7 @@ module.exports = function(settings) {
     },
     // TODO getSchedule() can be removed when tasks.json support is dropped
     getSchedule: function(name) {
-      return _.findWhere(settings.tasks.schedules, { name: name });
+      return _.findWhere(taskSchedules, { name: name });
     },
     getMostRecentTimestamp: function(reports, form, fields) {
       var report = this.getMostRecentReport(reports, form, fields);
