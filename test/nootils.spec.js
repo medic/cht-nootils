@@ -1,4 +1,5 @@
-var nootils = require('../src/web/nootils')({});
+const { expect } = require('chai');
+const nootils = require('../src/web/nootils')({});
 
 const format = function(date) {
   const result = date.toString();
@@ -6,202 +7,191 @@ const format = function(date) {
   return result.substr(0, 24);
 };
 
-exports['addDate adds days to the date'] = function(test) {
-  const date = new Date(2017, 0, 1);
-  const actual = nootils.addDate(date, 2);
-  test.equal(format(actual), 'Tue Jan 03 2017 00:00:00');
-  test.done();
-};
+describe('Utils', () => {
+  describe('addDate', () => {
+    it('addDate adds days to the date', () => {
+      const date = new Date(2017, 0, 1);
+      const actual = nootils.addDate(date, 2);
+      expect(format(actual)).to.eq('Tue Jan 03 2017 00:00:00');
+    });
 
-exports['addDate date defaults to now'] = function(test) {
-  const actual = nootils.addDate(null, 2);
-  const expected = new Date();
-  expected.setDate(expected.getDate() + 2);
-  test.equal(actual.getDate(), expected.getDate());
-  test.done();
-};
+    it('addDate date defaults to now', () => {
+      const actual = nootils.addDate(null, 2);
+      const expected = new Date();
+      expected.setDate(expected.getDate() + 2);
+      expect(actual.getDate()).to.eq(expected.getDate());
+    });
 
-exports['addDate returns the start of the day'] = function(test) {
-  const date = new Date(2017, 0, 1, 16, 32, 12, 555);
-  const actual = nootils.addDate(date, 4);
-  test.equal(format(actual), 'Thu Jan 05 2017 00:00:00');
-  test.done();
-};
+    it('addDate returns the start of the day', () => {
+      const date = new Date(2017, 0, 1, 16, 32, 12, 555);
+      const actual = nootils.addDate(date, 4);
+      expect(format(actual)).to.eq('Thu Jan 05 2017 00:00:00');
+    });
+  });
 
-exports['getLmpDate subtracts given weeks off reported date'] = function(test) {
-  const date = new Date(2017, 0, 30);
-  const doc = {
-    reported_date: date.valueOf(),
-    fields: { last_menstrual_period: 3 }
-  };
-  const actual = nootils.getLmpDate(doc);
-  test.equal(format(actual), 'Mon Jan 09 2017 00:00:00');
-  test.done();
-};
+  describe('getLmpDate', () => {
+    it('subtracts given weeks off reported date', () => {
+      const date = new Date(2017, 0, 30);
+      const doc = {
+        reported_date: date.valueOf(),
+        fields: { last_menstrual_period: 3 }
+      };
+      const actual = nootils.getLmpDate(doc);
+      expect(format(actual)).to.eq('Mon Jan 09 2017 00:00:00');
+    });
 
-exports['getLmpDate defaults to 4 weeks'] = function(test) {
-  const date = new Date(2017, 0, 30);
-  const doc = {
-    reported_date: date.valueOf(),
-    fields: { }
-  };
-  const actual = nootils.getLmpDate(doc);
-  test.equal(format(actual), 'Mon Jan 02 2017 00:00:00');
-  test.done();
-};
+    it('defaults to 4 weeks', () => {
+      const date = new Date(2017, 0, 30);
+      const doc = {
+        reported_date: date.valueOf(),
+        fields: { }
+      };
+      const actual = nootils.getLmpDate(doc);
+      expect(format(actual)).to.eq('Mon Jan 02 2017 00:00:00');
+    });
 
-exports['getLmpDate returns the start of the day'] = function(test) {
-  const date = new Date(2017, 0, 30, 16, 32, 12, 555);
-  const doc = {
-    reported_date: date.valueOf(),
-    fields: { last_menstrual_period: 3 }
-  };
-  const actual = nootils.getLmpDate(doc);
-  test.equal(format(actual), 'Mon Jan 09 2017 00:00:00');
-  test.done();
-};
+    it('returns the start of the day', () => {
+      const date = new Date(2017, 0, 30, 16, 32, 12, 555);
+      const doc = {
+        reported_date: date.valueOf(),
+        fields: { last_menstrual_period: 3 }
+      };
+      const actual = nootils.getLmpDate(doc);
+      expect(format(actual)).to.eq('Mon Jan 09 2017 00:00:00');
+    });
+  });
 
-exports['isTimely returns true'] = function(test) {
-  const actual = nootils.isTimely();
-  test.equal(actual, true);
-  test.done();
-};
+  it('isTimely returns true', () => {
+    const actual = nootils.isTimely();
+    expect(actual).to.eq(true);
+  });
 
-exports['getMostRecentReport returns null on no reports'] = function(test) {
-  const actual = nootils.getMostRecentReport([], 'V');
-  test.equal(actual, null);
-  test.done();
-};
+  describe('getMostRecentReport', () => {
+    it('returns null on no reports', () => {
+      const actual = nootils.getMostRecentReport([], 'V');
+      expect(actual).to.eq(null);
+    });
 
-exports['getMostRecentReport returns null on no matching report'] = function(test) {
-  const reports = [
-    { form: 'H', reported_date: 1 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V');
-  test.equal(actual, null);
-  test.done();
-};
+    it('returns null on no matching report', () => {
+      const reports = [
+        { form: 'H', reported_date: 1 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V');
+      expect(actual).to.eq(null);
+    });
 
-exports['getMostRecentReport returns report when only one match'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V');
-  test.equal(actual._id, 2);
-  test.done();
-};
+    it('returns report when only one match', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V');
+      expect(actual._id).to.eq(2);
+    });
 
-exports['getMostRecentReport returns most recent matching report'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2 },
-    { _id: 3, form: 'V', reported_date: 3 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V');
-  test.equal(actual._id, 3);
-  test.done();
-};
+    it('returns most recent matching report', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2 },
+        { _id: 3, form: 'V', reported_date: 3 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V');
+      expect(actual._id).to.eq(3);
+    });
 
-exports['getMostRecentReport ignores deleted reports'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2, deleted: true }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V');
-  test.equal(actual, null);
-  test.done();
-};
+    it('ignores deleted reports', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2, deleted: true }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V');
+      expect(actual).to.eq(null);
+    });
 
-exports['getMostRecentReport returns report matching field'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
-    { _id: 3, form: 'V', reported_date: 3 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false });
-  test.equal(actual._id, 2);
-  test.done();
-};
+    it('returns report matching field', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+        { _id: 3, form: 'V', reported_date: 3 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false });
+      expect(actual._id).to.eq(2);
+    });
 
-exports['getMostRecentReport returns report matching multiple fields'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
-    { _id: 3, form: 'V', reported_date: 3 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-01' });
-  test.equal(actual._id, 2);
-  test.done();
-};
+    it('returns report matching multiple fields', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+        { _id: 3, form: 'V', reported_date: 3 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-01' });
+      expect(actual._id).to.eq(2);
+    });
 
-exports['getMostRecentReport returns null if one of multiple fields does not match'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
-    { _id: 3, form: 'V', reported_date: 3 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-02' });
-  test.equal(actual, null);
-  test.done();
-};
+    it('returns null if one of multiple fields does not match', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
+        { _id: 3, form: 'V', reported_date: 3 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-02' });
+      expect(actual).to.eq(null);
+    });
 
-exports['getMostRecentReport returns null if no matching fields'] = function(test) {
-  const reports = [
-    { _id: 1, form: 'H', reported_date: 1 },
-    { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false} }},
-    { _id: 3, form: 'V', reported_date: 3 }
-  ];
-  const actual = nootils.getMostRecentReport(reports, 'V', { dob: '2000-01-02' });
-  test.equal(actual, null);
-  test.done();
-};
+    it('returns null if no matching fields', () => {
+      const reports = [
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false} }},
+        { _id: 3, form: 'V', reported_date: 3 }
+      ];
+      const actual = nootils.getMostRecentReport(reports, 'V', { dob: '2000-01-02' });
+      expect(actual).to.eq(null);
+    });
+  });
 
-exports['getField returns undefined if no matching fields'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1 };
-  const actual = nootils.getField(report, 'age');
-  test.equal(actual, undefined);
-  test.done();
-};
+  describe('getField', () => {
+    it('returns undefined if no matching fields', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1 };
+      const actual = nootils.getField(report, 'age');
+      expect(actual).to.eq(undefined);
+    });
 
-exports['getField returns value field'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {age: 23} };
-  const actual = nootils.getField(report, 'age');
-  test.equal(actual, 23);
-  test.done();
-};
+    it('returns value field', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {age: 23} };
+      const actual = nootils.getField(report, 'age');
+      expect(actual).to.eq(23);
+    });
 
-exports['getField returns value for a nested field'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
-  const actual = nootils.getField(report, 'personal_details.age');
-  test.equal(actual, 23);
-  test.done();
-};
+    it('returns value for a nested field', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+      const actual = nootils.getField(report, 'personal_details.age');
+      expect(actual).to.eq(23);
+    });
 
-exports['getField returns undefined if for a missing nested field'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
-  const actual = nootils.getField(report, 'personal_details.height');
-  test.equal(actual, undefined);
-  test.done();
-};
+    it('returns undefined if for a missing nested field', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+      const actual = nootils.getField(report, 'personal_details.height');
+      expect(actual).to.eq(undefined);
+    });
+  });
 
-exports['fieldsMatch returns true if provided field values match report values'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 23}} };
-  const actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
-  test.equal(actual, true);
-  test.done();
-};
+  describe('fieldsMatch', () => {
+    it('fieldsMatch returns true if provided field values match report values', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 23}} };
+      const actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
+      expect(actual).to.eq(true);
+    });
 
-exports['fieldsMatch returns false if field value does not match report'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 22}} };
-  const actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
-  test.equal(actual, false);
-  test.done();
-};
+    it('fieldsMatch returns false if field value does not match report', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {name: 'Eric', personal_details: {age: 22}} };
+      const actual = nootils.fieldsMatch(report, {'personal_details.age': 23, name: 'Eric'});
+      expect(actual).to.eq(false);
+    });
 
-exports['fieldsMatch returns false if field specified does not exist in report'] = function(test) {
-  const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
-  const actual = nootils.fieldsMatch(report, {'personal_details.height': 5});
-  test.equal(actual, false);
-  test.done();
-};
+    it('fieldsMatch returns false if field specified does not exist in report', () => {
+      const report = { _id: 1, form: 'H', reported_date: 1, fields: {personal_details: {age: 23}} };
+      const actual = nootils.fieldsMatch(report, {'personal_details.height': 5});
+      expect(actual).to.eq(false);
+    });
+  });
+});

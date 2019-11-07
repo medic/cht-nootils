@@ -10,7 +10,7 @@
     "eslint": "eslint src/**/*.js test/*.spec.js",
     "release": "git push && git tag v$(jq -r .version package.json) && git push --tags && npm publish --access=public",
     "test": "npm run eslint && TZ=GMT npm run unit && TZ=GMT+12 npm run unit && TZ=GMT-14 npm run unit",
-    "unit": "./node_modules/nodeunit/bin/nodeunit test/*.spec.js"
+    "unit": "./node_modules/mocha/bin/mocha test/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,6 @@
   },
   "devDependencies": {
     "eslint": "^6.1.0",
-    "nodeunit": "^0.11.3"
+    "mocha": "^6.2.2"
   }
 }
