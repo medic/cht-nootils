@@ -1,6 +1,6 @@
 {
   "name": "cht-nootils",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "CHT extensions for Nools for use in tasks-rules",
   "main": "src/nootils.js",
   "directories": {
