@@ -1,7 +1,7 @@
 {
-  "name": "medic-nootils",
-  "version": "4.0.1",
-  "description": "medic mobile extensions for nools for use in tasks-rules",
+  "name": "cht-nootils",
+  "version": "4.1.0",
+  "description": "CHT extensions for Nools for use in tasks-rules",
   "main": "src/nootils.js",
   "directories": {
     "test": "test"
@@ -14,20 +14,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/medic/medic-nootils.git"
+    "url": "git+ssh://git@github.com/medic/cht-nootils.git"
   },
   "keywords": [
     "nools",
     "medicmobile",
     "medic",
-    "mobile"
+    "mobile",
+    "cht"
   ],
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/medic/medic-nootils/issues"
+    "url": "https://github.com/medic/cht-nootils/issues"
   },
-  "homepage": "https://github.com/medic/medic-nootils#readme",
+  "homepage": "https://github.com/medic/cht-nootils#readme",
   "dependencies": {
     "underscore": "^1.9.1"
   },
