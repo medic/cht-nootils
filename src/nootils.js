@@ -44,7 +44,7 @@ module.exports = function(settings) {
     getMostRecentReport: function(reports, form, fields) {
       let result = null;
       reports.forEach(function(report) {
-        if (report.form === form &&
+        if (form.includes(report.form) &&
            !report.deleted &&
            (!result || (report.reported_date > result.reported_date)) &&
            (!fields || (report.fields && lib.fieldsMatch(report, fields)))) {
