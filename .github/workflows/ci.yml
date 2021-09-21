@@ -1,10 +1,10 @@
-name: Test CHT-nootils
+name: CI
 
 on: [push, pull_request]
 
 jobs:
   build:
-    name: Test on Node version ${{ matrix.node-version }}
+    name: Running tests on Node v${{ matrix.node-version }}
     runs-on: ubuntu-18.04
 
     strategy:
