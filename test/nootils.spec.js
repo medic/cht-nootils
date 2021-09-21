@@ -101,10 +101,13 @@ describe('Utils', () => {
 
     it('returns most recent matching report from multiple forms', () => {
       const reports = [
-        { _id: 1, form: 'H', reported_date: 1 },
-        { _id: 2, form: 'V', reported_date: 2 },
+        { _id: 6, form: 'B', reported_date: 9 },
         { _id: 3, form: 'V', reported_date: 3 },
-        { _id: 4, form: 'H', reported_date: 4 }
+        { _id: 4, form: 'H', reported_date: 4 },
+        { _id: 2, form: 'V', reported_date: 2 },
+        { _id: 5, form: 'A', reported_date: 6 },
+        { _id: 1, form: 'H', reported_date: 1 },
+        { _id: 7, form: 'C', reported_date: 12 },
       ];
       const actual = nootils.getMostRecentReport(reports, ['H', 'V']);
       expect(actual._id).to.eq(4);
