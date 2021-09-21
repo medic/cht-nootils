@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build for Node version ${{ matrix.node-version }}
+    name: Test on Node version ${{ matrix.node-version }}
     runs-on: ubuntu-18.04
 
     strategy:
