@@ -42,7 +42,7 @@ module.exports = function(settings) {
     },
 
     getMostRecentReport: function(reports, forms, fields) {
-      if (!Array.isArray(forms)) throw 'expecting forms to be a string array';
+      if (!Array.isArray(forms)) return lib.getMostRecentReport(reports, [forms], fields);
       let result = null;
       reports.forEach(function(report) {
         if (forms.includes(report.form) &&
