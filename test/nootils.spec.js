@@ -68,7 +68,7 @@ describe('Utils', () => {
 
   describe('getMostRecentReport', () => {
     it('returns null on no reports', () => {
-      const actual = nootils.getMostRecentReport([], 'V');
+      const actual = nootils.getMostRecentReport([], ['V']);
       expect(actual).to.eq(null);
     });
 
@@ -76,7 +76,7 @@ describe('Utils', () => {
       const reports = [
         { form: 'H', reported_date: 1 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V');
+      const actual = nootils.getMostRecentReport(reports, ['V']);
       expect(actual).to.eq(null);
     });
 
@@ -85,7 +85,7 @@ describe('Utils', () => {
         { _id: 1, form: 'H', reported_date: 1 },
         { _id: 2, form: 'V', reported_date: 2 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V');
+      const actual = nootils.getMostRecentReport(reports, ['V']);
       expect(actual._id).to.eq(2);
     });
 
@@ -95,7 +95,7 @@ describe('Utils', () => {
         { _id: 2, form: 'V', reported_date: 2 },
         { _id: 3, form: 'V', reported_date: 3 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V');
+      const actual = nootils.getMostRecentReport(reports, ['V']);
       expect(actual._id).to.eq(3);
     });
 
@@ -115,7 +115,7 @@ describe('Utils', () => {
         { _id: 1, form: 'H', reported_date: 1 },
         { _id: 2, form: 'V', reported_date: 2, deleted: true }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V');
+      const actual = nootils.getMostRecentReport(reports, ['V']);
       expect(actual).to.eq(null);
     });
 
@@ -125,7 +125,7 @@ describe('Utils', () => {
         { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
         { _id: 3, form: 'V', reported_date: 3 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false });
+      const actual = nootils.getMostRecentReport(reports, ['V'], { 'screening.malaria': false });
       expect(actual._id).to.eq(2);
     });
 
@@ -135,7 +135,7 @@ describe('Utils', () => {
         { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
         { _id: 3, form: 'V', reported_date: 3 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-01' });
+      const actual = nootils.getMostRecentReport(reports, ['V'], { 'screening.malaria': false, dob: '2000-01-01' });
       expect(actual._id).to.eq(2);
     });
 
@@ -145,7 +145,7 @@ describe('Utils', () => {
         { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false } }},
         { _id: 3, form: 'V', reported_date: 3 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V', { 'screening.malaria': false, dob: '2000-01-02' });
+      const actual = nootils.getMostRecentReport(reports, ['V'], { 'screening.malaria': false, dob: '2000-01-02' });
       expect(actual).to.eq(null);
     });
 
@@ -155,7 +155,7 @@ describe('Utils', () => {
         { _id: 2, form: 'V', reported_date: 2, fields: { dob: '2000-01-01', screening: { malaria: false} }},
         { _id: 3, form: 'V', reported_date: 3 }
       ];
-      const actual = nootils.getMostRecentReport(reports, 'V', { dob: '2000-01-02' });
+      const actual = nootils.getMostRecentReport(reports, ['V'], { dob: '2000-01-02' });
       expect(actual).to.eq(null);
     });
   });
