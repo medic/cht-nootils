@@ -41,10 +41,13 @@ module.exports = function(settings) {
       return report && report.reported_date;
     },
 
-    getMostRecentReport: function(reports, form, fields) {
+    getMostRecentReport: function(reports, forms, fields) {
+      if (!Array.isArray(forms)) {
+        forms = [forms];
+      }
       let result = null;
       reports.forEach(function(report) {
-        if (report.form === form &&
+        if (forms.includes(report.form) &&
            !report.deleted &&
            (!result || (report.reported_date > result.reported_date)) &&
            (!fields || (report.fields && lib.fieldsMatch(report, fields)))) {
