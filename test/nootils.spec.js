@@ -208,4 +208,34 @@ describe('Utils', () => {
       expect(actual).to.eq(false);
     });
   });
+
+  describe('isFormSubmittedInWindow', () => {
+    it('returns false if no matching report in window', () => {
+      const reports = [
+        { form: 'A', reported_date: 1 }
+      ];
+      const actual = nootils.isFormSubmittedInWindow(reports, 'A', 2, 3);
+      expect(actual).to.eq(false);
+    });
+
+    it('returns true if there are reports matching a form in a a string in a window', () => {
+      const reports = [
+        { form: 'A', reported_date: 1 },
+        { form: 'B', reported_date: 1 }
+      ];
+      const actual = nootils.isFormSubmittedInWindow(reports, 'A', 1, 3);
+      expect(actual).to.eq(true);
+    });
+
+    it('returns true if there are reports matching a form in an array in a window', () => {
+      const reports = [
+        { form: 'A', reported_date: 1 },
+        { form: 'A', reported_date: 1 },
+        { form: 'B', reported_date: 1 },
+        { form: 'C', reported_date: 1 }
+      ];
+      const actual = nootils.isFormSubmittedInWindow(reports, ['A', 'B'], 1, 3);
+      expect(actual).to.eq(true);
+    });
+  });
 });

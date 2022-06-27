@@ -57,10 +57,13 @@ module.exports = function(settings) {
       return result;
     },
 
-    isFormSubmittedInWindow: function(reports, form, start, end, count) {
+    isFormSubmittedInWindow: function(reports, forms, start, end, count) {
+      if (!Array.isArray(forms)) {
+        forms = [forms];
+      }
       let result = false;
       reports.forEach(function(report) {
-        if (!result && report.form === form) {
+        if (!result && forms.includes(report.form)) {
           if (report.reported_date >= start && report.reported_date <= end) {
             if (!count ||
                (count && report.fields && report.fields.follow_up_count > count)) {
